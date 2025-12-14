@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Send, Mail, MapPin, Loader2 } from 'lucide-react';
+import { Send, Mail, MapPin, Loader2, AlertCircle } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { Textarea } from '../ui/Textarea';
@@ -9,16 +9,44 @@ import { Label } from '../ui/Label';
 export default function Contact() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  
+  // State management
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setIsSubmitting(false);
-    setSubmitted(true);
+    setError(null);
+
+    // 1. Capture form data automatically using the 'name' attributes
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      // 2. Send POST request to your API Gateway
+      const response = await fetch('https://i4mf87ryk6.execute-api.ca-central-1.amazonaws.com/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      // 3. Handle success
+      setSubmitted(true);
+    } catch (err) {
+      console.error('Submission error:', err);
+      setError('Something went wrong. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -44,7 +72,7 @@ export default function Contact() {
             
             <div className="space-y-6">
               <a 
-                href="mailto:nick.airdrie@gmail.com"
+                href="mailto:hello@nairdrie.com"
                 className="flex items-center gap-4 group"
               >
                 <div className="w-12 h-12 rounded-full bg-white shadow-sm flex items-center justify-center group-hover:shadow-md transition-shadow">
@@ -53,7 +81,7 @@ export default function Contact() {
                 <div>
                   <div className="text-sm text-slate-500">Email</div>
                   <div className="text-slate-900 font-medium group-hover:text-indigo-600 transition-colors">
-                    nick.airdrie@gmail.com
+                    hello@nairdrie.com
                   </div>
                 </div>
               </a>
@@ -90,6 +118,13 @@ export default function Contact() {
                   <p className="text-slate-600">
                     Thanks for reaching out. I'll get back to you soon.
                   </p>
+                  <Button 
+                    variant="outline" 
+                    className="mt-6" 
+                    onClick={() => setSubmitted(false)}
+                  >
+                    Send another message
+                  </Button>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -98,6 +133,7 @@ export default function Contact() {
                       <Label htmlFor="name" className="text-slate-700">Name</Label>
                       <Input
                         id="name"
+                        name="name"
                         placeholder="John Doe"
                         required
                         className="h-12 rounded-xl border-slate-200 focus:border-indigo-500 focus:ring-indigo-500"
@@ -107,6 +143,7 @@ export default function Contact() {
                       <Label htmlFor="email" className="text-slate-700">Email</Label>
                       <Input
                         id="email"
+                        name="email"
                         type="email"
                         placeholder="john@example.com"
                         required
@@ -119,6 +156,7 @@ export default function Contact() {
                     <Label htmlFor="subject" className="text-slate-700">Subject</Label>
                     <Input
                       id="subject"
+                      name="subject"
                       placeholder="How can I help you?"
                       required
                       className="h-12 rounded-xl border-slate-200 focus:border-indigo-500 focus:ring-indigo-500"
@@ -129,12 +167,20 @@ export default function Contact() {
                     <Label htmlFor="message" className="text-slate-700">Message</Label>
                     <Textarea
                       id="message"
+                      name="message"
                       placeholder="Tell me about your project..."
                       required
                       rows={5}
                       className="rounded-xl border-slate-200 focus:border-indigo-500 focus:ring-indigo-500 resize-none"
                     />
                   </div>
+
+                  {error && (
+                    <div className="flex items-center gap-2 text-red-600 bg-red-50 p-3 rounded-lg text-sm">
+                      <AlertCircle className="w-4 h-4" />
+                      {error}
+                    </div>
+                  )}
                   
                   <Button
                     type="submit"
