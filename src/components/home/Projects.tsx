@@ -2,8 +2,10 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { ExternalLink, Github, ArrowUpRight } from 'lucide-react';
 import { Badge } from '../ui/Badge';
-import FridgieImage from '../../assets/fridgie.jpg';
-
+import FridgieImage from '../../assets/fridgie.png';
+import CMSImage from '../../assets/bbd.png';
+import PolyMLImage from '../../assets/polyml.png';
+import CAPNImage from '../../assets/capn.png';
 
 const projects = [
   {
@@ -17,15 +19,15 @@ const projects = [
   },
   {
     title: 'ProntoCMS',
-    description: 'Coming Soon...',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop',
-    tags: [],
+    description: 'ProntoCMS is the low barrier to entry website management tool that strips away complexity, offering effortless templating and simple content editing tools so small businesses can focus on growing their core business.',
+    image: CMSImage,
+    tags: ['React','MongoDB', 'Bun', 'TailwindCSS', 'AWS'],
     featured: true
   },
   {
     title: 'PolyML',
     description: 'A collection of landing page redesigns focused on improving UI/UX for a financial technology product.',
-    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop',
+    image: PolyMLImage,
     tags: ['React', 'TailwindCSS', 'Framer Motion', 'Wordpress'],
     // github: 'https://github.com',
     live: 'https://polyml.com/financial-forecasting/',
@@ -34,10 +36,9 @@ const projects = [
   {
     title: 'Canadian Association of Paediatric Nurses',
     description: 'Completely redesigned website, custom admin panel with CMS, and payment/membership integration.',
-    image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&h=600&fit=crop',
+    image: CAPNImage,
     tags: ['Node.js', 'Stripe', 'React', 'AWS', 'MySQL'],
-    github: 'https://github.com',
-    live: 'https://example.com',
+    live: 'https://paednurse.ca',
     featured: false,
   },
 ];

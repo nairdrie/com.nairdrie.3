@@ -107,7 +107,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   </button>
                 ))}
                 <a
-                  href="/resume.pdf"
+                  href="/Nick_Airdrie_Resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block w-full text-center mt-4 text-sm font-medium text-white bg-slate-900 hover:bg-slate-800 px-5 py-3 rounded-full transition-all duration-300"
