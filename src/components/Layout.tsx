@@ -22,11 +22,24 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }, []);
 
   const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    // 1. Close the menu immediately
     setIsMobileMenuOpen(false);
+
+    // 2. Wait for the menu close animation to finish (or mostly finish) before scrolling
+    setTimeout(() => {
+      const element = document.querySelector(href);
+      if (element) {
+        // dynamic offset based on nav height (80px) + some breathing room
+        const headerOffset = 80; 
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }, 50); // 300ms delay matches the duration of most Framer Motion animations
   };
 
   return (

@@ -29,7 +29,7 @@ export default function Footer() {
               <Linkedin className="w-5 h-5" />
             </a>
             <a
-              href="mailto:nick.airdrie@gmail.com"
+              href="mailto:hello@nairdrie.com"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-slate-400 hover:text-white transition-colors"
