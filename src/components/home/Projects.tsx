@@ -3,11 +3,19 @@ import { motion, useInView } from 'framer-motion';
 import { ExternalLink, Github, ArrowUpRight } from 'lucide-react';
 import { Badge } from '../ui/Badge';
 import FridgieImage from '../../assets/fridgie.png';
-import CMSImage from '../../assets/bbd.png';
+import KeystoneImage from '../../assets/keystone.png';
 import PolyMLImage from '../../assets/polyml.png';
 import CAPNImage from '../../assets/capn.png';
 
 const projects = [
+  {
+    title: 'Keystone Web Design',
+    description: 'An AI-powered website builder made for Canadian small businesses — describe what you do in one sentence and get a real, bookable website live in minutes.',
+    image: KeystoneImage,
+    tags: ['Next.js', 'React', 'TypeScript', 'TailwindCSS', 'AWS'],
+    live: 'https://keystoneweb.ca',
+    featured: true
+  },
   {
     title: 'Fridgie',
     description: 'A collaborative meal planning application designed to organize recipes and simplify kitchen coordination.',
@@ -15,13 +23,6 @@ const projects = [
     tags: ['React Native', 'Node.js', 'Firebase', 'Expo'],
     github: 'https://github.com/nairdrie/fridgie',
     live: 'https://github.com/nairdrie/fridgie-api',
-    featured: true
-  },
-  {
-    title: 'ProntoCMS',
-    description: 'ProntoCMS is the low barrier to entry website management tool that strips away complexity, offering effortless templating and simple content editing tools so small businesses can focus on growing their core business.',
-    image: CMSImage,
-    tags: ['React','MongoDB', 'Bun', 'TailwindCSS', 'AWS'],
     featured: true
   },
   {
@@ -41,6 +42,13 @@ const projects = [
     live: 'https://paednurse.ca',
     featured: false,
   },
+  {
+    title: 'Archway Games',
+    description: 'An indie game studio project currently in development. More details coming soon.',
+    tags: ['Game Dev', 'Unity', 'C#'],
+    featured: false,
+    wip: true,
+  },
 ];
 
 function ProjectCard({ project, index }: { project: any; index: number }) {
@@ -58,13 +66,30 @@ function ProjectCard({ project, index }: { project: any; index: number }) {
       <div className="relative h-full bg-white rounded-2xl overflow-hidden border border-slate-100 hover:border-slate-200 transition-all duration-500 hover:shadow-xl hover:shadow-slate-100/50">
         {/* Image */}
         <div className={`relative overflow-hidden ${project.featured ? 'h-64 md:h-80' : 'h-48'}`}>
-          <img
-            src={project.image}
-            alt={project.title}
-            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
-          />
+          {project.image ? (
+            <img
+              src={project.image}
+              alt={project.title}
+              className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-slate-100 via-slate-50 to-indigo-50 flex items-center justify-center">
+              <span className="text-2xl font-bold tracking-tight text-slate-300">
+                {project.title}
+              </span>
+            </div>
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
-          
+
+          {/* WIP badge */}
+          {project.wip && (
+            <div className="absolute top-4 left-4">
+              <Badge className="bg-amber-500/90 backdrop-blur-sm text-white hover:bg-amber-500 border-0 font-medium text-xs">
+                Work in Progress
+              </Badge>
+            </div>
+          )}
+
           {/* Links overlay */}
           <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             {project.github && (
